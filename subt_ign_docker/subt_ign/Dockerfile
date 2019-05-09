@@ -86,6 +86,11 @@ RUN rosdep update
 # docker is run
 RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
 
+
+# Build and install subt from source
+# TODO: Should really build this after installing all the ignition packages
+
+# TODO: Technically should clone -r subt branch
 RUN mkdir -p subt_ws/src \
  && cd subt_ws/src \
  && hg clone https://bitbucket.org/osrf/subt
@@ -98,6 +103,7 @@ RUN tar xvf subt_robot_examples_latest.tgz
 
 # Build and install subt
 RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash && catkin_make install'
+
 
 # Ignition prerequisites
 RUN sudo apt-get -y install \
@@ -161,6 +167,10 @@ RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ig
   && cd /home/$USERNAME/ign/ign-physics \
   && mkdir build && cd build && cmake .. && make -j16 && sudo make install
 
+# ogre2 is required for subt rendering
+RUN sudo apt install -y \
+    libogre-2.1 \
+    libogre-2.1-dev
 RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ign-rendering -r default \
   && cd /home/$USERNAME/ign/ign-rendering \
   && mkdir build && cd build && cmake .. && make -j16 && sudo make install 
@@ -191,6 +201,11 @@ RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ig
 
 RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ign-gazebo -r default \
   && cd /home/$USERNAME/ign/ign-gazebo \
+  && mkdir build && cd build && cmake .. && make -j16 && sudo make install
+
+RUN sudo apt install -y libwebsockets-dev
+RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ign-launch -r default \
+  && cd /home/$USERNAME/ign/ign-launch \
   && mkdir build && cd build && cmake .. && make -j16 && sudo make install
 
 RUN /bin/bash -c 'echo ". /opt/ros/melodic/setup.bash" >> /home/$USERNAME/.bashrc' \
