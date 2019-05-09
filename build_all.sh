@@ -3,12 +3,13 @@
 # Mabel Zhang
 # 24 Apr 2019
 #
-# Pull and rebuild all Ignition repositories
+# Update and rebuild all Ignition repositories
 #
 
 THIS_DIR=`pwd`
 
-ROOT=/data/ign
+# Path on local machine where repos are located
+ROOT=/data/ws/sim/ign
 
 # Usage: $ echo -e "$MAGENTA"abc"$ENDC"abc""
 OKCYAN="\e[96m"
