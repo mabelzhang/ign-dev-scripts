@@ -91,8 +91,6 @@ docker run -it \
   -v "/tmp/.X11-unix:/tmp/.X11-unix" \
   -v "/etc/localtime:/etc/localtime:ro" \
   -v "/dev/input:/dev/input" \
-  -v "/data/ws/sim/subt_ws_host:/home/developer/subt_ws_host" \
-  -v "/data/ws/sim/ign:/home/developer/ign" \
   --privileged \
   --rm \
   --runtime=nvidia \

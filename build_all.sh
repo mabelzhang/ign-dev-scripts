@@ -9,7 +9,8 @@
 THIS_DIR=`pwd`
 
 # Path on local machine where repos are located
-ROOT=/data/ws/sim/ign
+#ROOT=/data/ws/sim/ign
+ROOT=/data/ign
 
 # Usage: $ echo -e "$MAGENTA"abc"$ENDC"abc""
 OKCYAN="\e[96m"

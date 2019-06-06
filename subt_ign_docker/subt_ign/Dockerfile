@@ -87,24 +87,6 @@ RUN rosdep update
 RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
 
 
-# Build and install subt from source
-# TODO: Should really build this after installing all the ignition packages
-
-# TODO: Technically should clone -r subt branch
-RUN mkdir -p subt_ws/src \
- && cd subt_ws/src \
- && hg clone https://bitbucket.org/osrf/subt
-
-WORKDIR /home/$USERNAME/subt_ws
-
-# Download and install rotors package
-RUN wget https://s3.amazonaws.com/osrf-distributions/subt_robot_examples/releases/subt_robot_examples_latest.tgz
-RUN tar xvf subt_robot_examples_latest.tgz
-
-# Build and install subt
-RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash && catkin_make install'
-
-
 # Ignition prerequisites
 RUN sudo apt-get -y install \
   curl \
@@ -139,7 +121,7 @@ RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ig
   && cd /home/$USERNAME/ign/ign-tools \
   && mkdir build && cd build && cmake .. && make -j16 && sudo make install
 
-RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ign-msgs -r default \
+RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ign-msgs -r ign-msgs4 \
   && cd /home/$USERNAME/ign/ign-msgs \
   && mkdir build && cd build && cmake .. && make -j16 && sudo make install
 
@@ -207,6 +189,23 @@ RUN sudo apt install -y libwebsockets-dev
 RUN cd /home/$USERNAME/ign && hg clone https://bitbucket.org/ignitionrobotics/ign-launch -r default \
   && cd /home/$USERNAME/ign/ign-launch \
   && mkdir build && cd build && cmake .. && make -j16 && sudo make install
+
+
+# Build and install subt from source
+
+RUN mkdir -p subt_ws/src \
+ && cd subt_ws/src \
+ && hg clone https://bitbucket.org/osrf/subt
+
+WORKDIR /home/$USERNAME/subt_ws
+
+# Download and install rotors package
+RUN wget https://s3.amazonaws.com/osrf-distributions/subt_robot_examples/releases/subt_robot_examples_latest.tgz
+RUN tar xvf subt_robot_examples_latest.tgz
+
+# Build and install subt
+RUN /bin/bash -c 'source /opt/ros/melodic/setup.bash && catkin_make install'
+
 
 RUN /bin/bash -c 'echo ". /opt/ros/melodic/setup.bash" >> /home/$USERNAME/.bashrc' \
  && /bin/bash -c 'echo ". /usr/share/gazebo/setup.sh" >> /home/$USERNAME/.bashrc' \
