@@ -9,8 +9,8 @@
 THIS_DIR=`pwd`
 
 # Path on local machine where repos are located
-#ROOT=/data/ws/sim/ign
-ROOT=/data/ign
+ROOT=/data/ws/sim/ign
+#ROOT=/data/ign
 
 # Usage: $ echo -e "$MAGENTA"abc"$ENDC"abc""
 OKCYAN="\e[96m"
@@ -34,13 +34,33 @@ declare -a repos=(
   "ign-gui"
   "ign-gazebo")
 
-for i in "${repos[@]}"
+declare -a branches=(
+  "ign-cmake2"
+  "ign-math6"
+  "ign-common3"
+  "default"
+  "ign-msgs4"
+  "ign-transport7"
+  "sdf8"
+  "ign-plugin1"
+  "ign-physics1"
+  "ign-rendering2"
+  "ign-sensors2"
+  "ign-fuel-tools3"
+  "ign-gui2"
+  "ign-gazebo2"
+)
+
+for i in "${!repos[@]}"
 do
-  echo -e "$OKCYAN""$i""$ENDC"
-  cd $ROOT/$i/build
+  repo="${repos[$i]}"
+  branch="${branches[$i]}"
+
+  echo -e "$OKCYAN""$repo""$ENDC"
   echo -e "$OKCYAN""branch: "`hg branch`"$ENDC"
+  cd $ROOT/$repo/build
   hg pull
-  hg update
+  hg update $branch
   make -j16
   sudo make install
 done
