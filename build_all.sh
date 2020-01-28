@@ -10,7 +10,6 @@ THIS_DIR=`pwd`
 
 # Path on local machine where repos are located
 ROOT=/data/ws/sim/ign
-#ROOT=/data/ign
 
 # Usage: $ echo -e "$MAGENTA"abc"$ENDC"abc""
 OKCYAN="\e[96m"
@@ -32,13 +31,15 @@ declare -a repos=(
   "ign-sensors"
   "ign-fuel-tools"
   "ign-gui"
-  "ign-gazebo")
+  "ign-gazebo"
+  "ign-launch")
 
+# Branches from https://bitbucket.org/osrf/gazebodistro/src/default/collection-blueprint.yaml
 declare -a branches=(
   "ign-cmake2"
   "ign-math6"
   "ign-common3"
-  "default"
+  "ign-tools0"
   "ign-msgs4"
   "ign-transport7"
   "sdf8"
@@ -49,6 +50,7 @@ declare -a branches=(
   "ign-fuel-tools3"
   "ign-gui2"
   "ign-gazebo2"
+  "ign-launch1"
 )
 
 for i in "${!repos[@]}"
