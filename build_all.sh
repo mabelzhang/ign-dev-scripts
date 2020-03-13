@@ -114,11 +114,9 @@ do
 
   if [[ ! -d "$ROOT/$repo/build" ]]; then
     mkdir $ROOT/$repo/build
-    cd $ROOT/$repo/build
-    cmake ..
-  else
-    cd $ROOT/$repo/build
   fi
+  cd $ROOT/$repo/build
+  cmake ..
   make -j16
   sudo make install
 done
