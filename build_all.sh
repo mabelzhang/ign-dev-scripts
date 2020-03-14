@@ -10,6 +10,9 @@
 THIS_DIR=`pwd`
 
 DISTRO=blueprint
+echo -e "$OKCYAN""Distribution: ""$DISTRO""$ENDC"
+
+REMOVE_BUILD_DIR=1
 
 # Path on local machine where repos are located
 if [[ "$DISTRO" == blueprint ]]; then
@@ -111,6 +114,16 @@ do
 
   hg update $branch
   echo -e "$OKCYAN""branch: "`hg branch`"$ENDC"
+
+  #read -p 'Verify branch above is correct (n to abort, anything else to continue): ' uinput
+  #if [ "$uinput" == "n" ] || [ "$uinput" == "N" ]; then
+  #  break
+  #fi
+
+  if [[ $REMOVE_BUILD_DIR == 1 ]]; then
+    echo -e "$OKCYAN""Removing build directory""$ENDC"
+    sudo rm -rf $ROOT/$repo/build
+  fi
 
   if [[ ! -d "$ROOT/$repo/build" ]]; then
     mkdir $ROOT/$repo/build
