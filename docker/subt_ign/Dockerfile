@@ -1,7 +1,7 @@
 # Install subt and Ignition Gazebo from source
 
 # Adapted from subt Gazebo 9 Dockerfile
-#   https://bitbucket.org/osrf/subt/src/default/docker/subt/Dockerfile
+#   https://bitbucket.org/osrf/subt/src/gazebo9/docker/subt/Dockerfile
 
 # Ubuntu 18.04 with nvidia-docker2 beta opengl support
 FROM nvidia/opengl:1.0-glvnd-devel-ubuntu18.04
