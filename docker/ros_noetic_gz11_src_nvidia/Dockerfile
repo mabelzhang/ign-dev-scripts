@@ -101,10 +101,6 @@ RUN cd $ROS_WS && \
   ${ROS_WS}/src/catkin/bin/catkin_make_isolated --install -DCMAKE_BUILD_TYPE=Release
 
 
-# Clone all the gazebo models so that you don't download them every time
-# docker is run
-RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
-
 # Install Gazebo 11
 # http://gazebosim.org/tutorials?tut=install_ubuntu&cat=install
 RUN sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list'
@@ -114,4 +110,14 @@ RUN apt-get update \
   && apt-get install -y libsdformat9* \
   && apt-get install -y libgazebo11*
 
+
+# Optional. Install these manually because noetic ros_comm does not include many packages
+RUN apt-get install -y libeigen3-dev
+
+
 USER $USERNAME
+
+# Clone all the gazebo models so that you don't download them every time
+# docker is run
+# Use regular user to clone, not root. Otherwise Gazebo will need sudo to start.
+RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
