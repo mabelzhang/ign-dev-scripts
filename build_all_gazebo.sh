@@ -76,6 +76,7 @@ elif [[ "$DISTRO" == 11 ]]; then
     "ign-msgs"
     "ign-fuel-tools"
     "ign-transport"
+    "gazebo"
   )
   # Versions from http://gazebosim.org/tutorials?tut=install_dependencies_from_source
   declare -a branches=(
@@ -87,6 +88,7 @@ elif [[ "$DISTRO" == 11 ]]; then
     "ign-msgs5"
     "ign-fuel-tools4"
     "ign-transport8"
+    "gazebo11"
   )
 fi
 
