@@ -14,7 +14,7 @@ echo -e "$OKCYAN""Distribution: ""$DISTRO""$ENDC"
 
 REMOVE_BUILD_DIR=1
 
-# Path on local machine where repos are located
+# Modify paths to where repos are locally
 if [[ "$DISTRO" == blueprint ]]; then
   ROOT=/data/ws/sim/ign
 elif [[ "$DISTRO" == dome ]]; then

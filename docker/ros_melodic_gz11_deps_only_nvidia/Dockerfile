@@ -1,4 +1,5 @@
-# Install Gazebo 11 from Debian
+# Install dependencies of Gazebo 11, but not Gazebo 11 itself, so that it can
+# be built from source inside the container for development.
 
 # Adapted from subt Gazebo 9 (from Debian) Dockerfile
 #   https://bitbucket.org/osrf/subt/src/gazebo9/docker/subt/Dockerfile
@@ -86,7 +87,14 @@ RUN rosdep update
 # docker is run
 RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
 
-# Gazebo 11 install from Debian
-RUN sudo apt-get update \
-  && sudo apt-get install -y libsdformat9* \
-  && sudo apt-get install -y libgazebo11*
+# Instructions specific to a setup to build Gazebo from source
+
+# Remove Debian installation of Gazebo-related libraries
+# http://gazebosim.org/tutorials?tut=install_from_source&cat=install
+RUN sudo apt-get remove -y '.*gazebo.*' '.*sdformat.*' '.*ignition-.*'
+#RUN sudo apt-get remove -y '.*gazebo.*'
+
+# Dependencies for installing Gazebo from source
+# http://gazebosim.org/tutorials?tut=install_dependencies_from_source
+RUN sudo apt-get install -y pkg-config
+RUN sudo apt-get install -y libdart6-dev
