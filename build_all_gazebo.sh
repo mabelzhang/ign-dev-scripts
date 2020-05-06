@@ -68,8 +68,8 @@ if [[ "$DISTRO" == 9 ]]; then
 elif [[ "$DISTRO" == 11 ]]; then
   # Ref https://stackoverflow.com/questions/8880603/loop-through-an-array-of-strings-in-bash
   declare -a repos=(
-    #"ign-cmake"
-    #"ign-math"
+    "ign-cmake"
+    "ign-math"
     "ign-common"
     "ign-tools"
     "sdformat"
@@ -80,8 +80,8 @@ elif [[ "$DISTRO" == 11 ]]; then
   )
   # Versions from http://gazebosim.org/tutorials?tut=install_dependencies_from_source
   declare -a branches=(
-    #"ign-cmake2"
-    #"ign-math6"
+    "ign-cmake2"
+    "ign-math6"
     "ign-common3"
     "ign-tools1"
     "sdf9"
