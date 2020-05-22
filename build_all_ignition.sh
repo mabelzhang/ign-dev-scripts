@@ -6,6 +6,9 @@
 # Clone repositories if do not exist locally.
 # Update and rebuild all Ignition repositories
 #
+# Dependencies:
+#   sudo apt-get install ccache
+#
 
 THIS_DIR=`pwd`
 
@@ -96,11 +99,11 @@ elif [[ "$DISTRO" == latest ]]; then
     "master"
     "ign-common3"
     "master"
-    "master"
+    "ign_msgs5"
     "master"
     "sdf9"
     "master"
-    "master"
+    "ign-physics2"
     "master"
     "master"
     "ign-fuel-tools4"
@@ -149,7 +152,7 @@ do
     mkdir $ROOT/$repo/build
   fi
   cd $ROOT/$repo/build
-  cmake ..
+  cmake .. -DCMAKE_CXX_COMPILER_LAUNCHER=ccache
   make -j16
   sudo make install
 done
