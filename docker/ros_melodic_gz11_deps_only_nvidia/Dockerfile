@@ -98,3 +98,4 @@ RUN sudo apt-get remove -y '.*gazebo.*' '.*sdformat.*' '.*ignition-.*'
 # http://gazebosim.org/tutorials?tut=install_dependencies_from_source
 RUN sudo apt-get install -y pkg-config
 RUN sudo apt-get install -y libdart6-dev
+RUN sudo apt-get install -y ccache

@@ -9,16 +9,18 @@
 
 THIS_DIR=`pwd`
 
-DISTRO=blueprint
+DISTRO=latest
 echo -e "$OKCYAN""Distribution: ""$DISTRO""$ENDC"
 
-REMOVE_BUILD_DIR=1
+REMOVE_BUILD_DIR=0
 
 # Modify paths to where repos are locally
 if [[ "$DISTRO" == blueprint ]]; then
   ROOT=/data/ws/sim/ign
 elif [[ "$DISTRO" == dome ]]; then
   ROOT=/data/ws/sim/ign_dome
+elif [[ "$DISTRO" == latest ]]; then
+  ROOT=/home/master/data/ws/sim/ign/src
 fi
 
 # If ROOT doesn't exist, create it.
@@ -88,6 +90,24 @@ elif [[ "$DISTRO" == dome ]]; then
     "default"
     "ign-launch1"
   )
+elif [[ "$DISTRO" == latest ]]; then
+  declare -a branches=(
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+    "master"
+  )
 fi
 
 for i in "${!repos[@]}"
@@ -101,19 +121,19 @@ do
   if [[ ! -d "$ROOT/$repo" ]]; then
     cd $ROOT
     if [[ "$repo" == sdformat ]]; then
-      hg clone https://bitbucket.org/osrf/sdformat
+      git clone https://github.com/osrf/sdformat
     else
-      hg clone https://bitbucket.org/ignitionrobotics/$repo
+      git clone https://github.com/ignitionrobotics/$repo
     fi
     cd $ROOT/$repo
   # If repo already exist locally
   else
     cd $ROOT/$repo
-    hg pull
+    git pull
   fi
 
-  hg update $branch
-  echo -e "$OKCYAN""branch: "`hg branch`"$ENDC"
+  git checkout $branch
+  echo -e "$OKCYAN""branch: "`git branch`"$ENDC"
 
   #read -p 'Verify branch above is correct (n to abort, anything else to continue): ' uinput
   #if [ "$uinput" == "n" ] || [ "$uinput" == "N" ]; then
