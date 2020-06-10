@@ -77,6 +77,9 @@ RUN sudo /bin/sh -c 'echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu 
     ros-melodic-tf2-sensor-msgs \
     ros-melodic-twist-mux \
     ros-melodic-velodyne-simulator \
+    python-rosdep \
+    python-rosinstall-generator \
+    python-wstool \
  && sudo rosdep init \
  && sudo apt-get clean
 

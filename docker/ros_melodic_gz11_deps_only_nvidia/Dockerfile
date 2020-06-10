@@ -65,7 +65,7 @@ RUN sudo /bin/sh -c 'echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu 
  && sudo /bin/sh -c 'echo "deb [trusted=yes] http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
  && sudo /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-prerelease `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-prerelease.list' \
  && sudo /bin/sh -c 'wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -' \
- && sudo /bin/sh -c 'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key 421C365BD9FF1F717815A3895523BAEEB01FA116' \
+ && sudo /bin/sh -c 'apt-key adv --keyserver hkp://keyserver.ubuntu.com:80 --recv-key C1CF6E31E6BADE8868B172B4F42ED6FBAB17C654' \
  && sudo apt-get update \
  && sudo apt-get install -y \
     python-catkin-tools \
@@ -78,9 +78,12 @@ RUN sudo /bin/sh -c 'echo "deb [trusted=yes] http://packages.ros.org/ros/ubuntu 
     ros-melodic-tf2-sensor-msgs \
     ros-melodic-twist-mux \
     ros-melodic-velodyne-simulator \
- && sudo rosdep init \
+    python-rosdep \
+    python-rosinstall-generator \
+    python-wstool \
  && sudo apt-get clean
 
+RUN sudo rosdep init
 RUN rosdep update
 
 # Clone all the gazebo models so that you don't download them every time
@@ -92,7 +95,6 @@ RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gaze
 # Remove Debian installation of Gazebo-related libraries
 # http://gazebosim.org/tutorials?tut=install_from_source&cat=install
 RUN sudo apt-get remove -y '.*gazebo.*' '.*sdformat.*' '.*ignition-.*'
-#RUN sudo apt-get remove -y '.*gazebo.*'
 
 # Dependencies for installing Gazebo from source
 # http://gazebosim.org/tutorials?tut=install_dependencies_from_source
