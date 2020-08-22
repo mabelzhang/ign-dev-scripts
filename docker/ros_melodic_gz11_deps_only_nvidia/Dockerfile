@@ -88,7 +88,7 @@ RUN rosdep update
 
 # Clone all the gazebo models so that you don't download them every time
 # docker is run
-RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
+# RUN mkdir -p /home/$USERNAME/.gazebo && git clone https://github.com/osrf/gazebo_models /home/$USERNAME/.gazebo/models
 
 # Instructions specific to a setup to build Gazebo from source
 
@@ -100,4 +100,4 @@ RUN sudo apt-get remove -y '.*gazebo.*' '.*sdformat.*' '.*ignition-.*'
 # http://gazebosim.org/tutorials?tut=install_dependencies_from_source
 RUN sudo apt-get install -y pkg-config
 RUN sudo apt-get install -y libdart6-dev
-RUN sudo apt-get install -y ccache
+RUN sudo apt-get install -y ccache python3-colcon-common-extensions

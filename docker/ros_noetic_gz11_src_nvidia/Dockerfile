@@ -120,4 +120,4 @@ USER $USERNAME
 # Clone all the gazebo models so that you don't download them every time
 # docker is run
 # Use regular user to clone, not root. Otherwise Gazebo will need sudo to start.
-RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
+RUN mkdir -p /home/$USERNAME/.gazebo && git clone https://github.com/osrf/gazebo_models /home/$USERNAME/.gazebo/models

@@ -27,7 +27,7 @@ RUN rosdep update
 
 # Clone all the gazebo models so that you don't download them every time
 # docker is run
-# RUN mkdir -p /home/$USERNAME/.gazebo && hg clone https://bitbucket.org/osrf/gazebo_models /home/$USERNAME/.gazebo/models
+# RUN mkdir -p /home/$USERNAME/.gazebo && git clone https://github.com/osrf/gazebo_models /home/$USERNAME/.gazebo/models
 
 # Instructions specific to a setup to build Gazebo from source
 
