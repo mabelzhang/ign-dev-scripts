@@ -101,5 +101,8 @@ RUN sudo apt-get remove -y '.*gazebo.*' '.*sdformat.*' '.*ignition-.*'
 RUN sudo apt-get install -y pkg-config
 RUN sudo apt-get install -y libdart6-dev
 RUN sudo apt-get install -y ccache python3-colcon-common-extensions
+
+# Optional: Extra dependencies for VRX and VORC
 RUN sudo apt-get install -y ros-melodic-joy-teleop ros-melodic-joy \
-    ros-melodic-teleop-twist-keyboard
+    ros-melodic-teleop-twist-keyboard ros-melodic-velodyne-simulator \
+    ros-melodic-hector-gazebo-plugins
