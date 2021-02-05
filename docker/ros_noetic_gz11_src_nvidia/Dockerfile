@@ -1,11 +1,17 @@
 # Install ROS 1 Noetic from source, with Gazebo 11 from Debian
+#
+# This image was created before Noetic was released, hence it rosinstalls
+# ros_comm as opposed to desktop, which did not exist. The image still works,
+# it just means many packages you may need will need to be manually pulled
+# and compiled in the container. Easiest way is to mount a directory from
+# the host.
 
 # 14 Apr 2020
 
 # Adapted from subt Gazebo 9 (from Debian) Dockerfile
 #   https://bitbucket.org/osrf/subt/src/gazebo9/docker/subt/Dockerfile
 
-# NVIDIA for Gazebo GUI
+# Home-baked image with NVIDIA for X server
 FROM nvidia_opengl_ubuntu20
 
 # This avoids keyboard interaction when asked for geographic area
@@ -80,7 +86,7 @@ RUN sudo rosdep update
 
 USER root
 
-# Resolve dependencies and install ROS 1 Noetic from source
+# Create a catkin workspace
 ENV ROS_WS /opt/ros_ws/noetic
 RUN mkdir -p $ROS_WS/src
 RUN cd $ROS_WS && \
@@ -93,7 +99,10 @@ RUN cd $ROS_WS && \
 # TODO: For some reason it can't find this. But if I go into Ubuntu 20.04 Docker container, I can locate it.
 #RUN apt-get update && apt-get install -y python3-catkin-pkg-modules
 
+# Resolve dependencies
 RUN rosdep install --from-paths $ROS_WS/src --ignore-src --rosdistro noetic -y
+
+# Build the catkin workspace
 # Download latest version of catkin_make_isolated with python3 in shebang. Else error when run it
 RUN cd $ROS_WS/src/catkin/bin/ && \
   wget https://raw.githubusercontent.com/ros/catkin/noetic-devel/bin/catkin_make_isolated -O catkin_make_isolated
@@ -115,6 +124,7 @@ RUN apt-get update \
 RUN apt-get install -y libeigen3-dev
 
 
+# When running a container, start with the non-root user
 USER $USERNAME
 
 # Clone all the gazebo models so that you don't download them every time
