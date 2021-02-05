@@ -66,25 +66,12 @@ RUN sudo /bin/sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/ma
  && sudo apt-get update \
  && sudo apt-get install -y python3-vcstool python3-colcon-common-extensions
 
-# Ignition prerequisites
-#RUN sudo apt-get install -y \
-#    ruby2.7 \
-#    ruby2.7-dev \
-#    ruby-ronn \
-#    libgflags-dev \
-#    doxygen \
-#    ruby-ronn \
-#    libtinyxml2-dev \
-#    libtinyxml-dev \
-#    libeigen3-dev
-
-# Install dependencies
+# Install Ignition dependencies
 RUN sudo /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
  && sudo /bin/sh -c 'wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -' \
  && sudo apt-get update \
  && sudo apt-get install -y \
   $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/ignition\|sdf/d' | tr '\n' ' ')
-  #binutils-dev build-essential cmake curl freeglut3-dev libavcodec-dev libavdevice-dev libavformat-dev libavutil-dev libbenchmark-dev libcurl4-openssl-dev libdart-collision-ode-dev libdart-dev libdart-external-ikfast-dev libdart-external-odelcpsolver-dev libdart-utils-urdf-dev libeigen3-dev libfreeimage-dev libgflags-dev libglew-dev libgts-dev libjsoncpp-dev libogre-1.9-dev libogre-2.1-dev libprotobuf-dev libprotoc-dev libsqlite3-dev libswscale-dev libtinyxml2-dev liburdfdom-dev libwebsockets-dev libxi-dev libxml2-utils libxmu-dev libyaml-dev libzip-dev libzmq3-dev pkg-config protobuf-compiler python-psutil python-yaml qml-module-qt-labs-folderlistmodel qml-module-qt-labs-platform qml-module-qt-labs-settings qml-module-qtcharts qml-module-qtgraphicaleffects qml-module-qtqml-models2 qml-module-qtquick-controls qml-module-qtquick-controls2 qml-module-qtquick-dialogs qml-module-qtquick-layouts qml-module-qtquick-templates2 qml-module-qtquick-window2 qml-module-qtquick2 qtbase5-dev qtdeclarative5-dev qtquickcontrols2-5-dev rubocop ruby ruby-dev ruby-ronn swig uuid-dev xvfb
 
 # sdformat10 dependencies
 RUN sudo apt-get install -y \
