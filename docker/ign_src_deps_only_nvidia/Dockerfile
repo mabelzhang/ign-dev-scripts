@@ -1,5 +1,8 @@
 # Install all the dependencies required for building Ignition from source
 #   https://ignitionrobotics.org/docs/edifice/install_ubuntu_src
+# Ignition itself is not installed. A directory containing the source code
+# can be mounted from the host when run the container, and compiled within
+# the container.
 
 # Adapted from subt Gazebo 9 Dockerfile
 #   https://bitbucket.org/osrf/subt/src/gazebo9/docker/subt/Dockerfile
@@ -66,7 +69,15 @@ RUN sudo /bin/sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/ma
  && sudo apt-get update \
  && sudo apt-get install -y python3-vcstool python3-colcon-common-extensions
 
+# Check out Ignition source, just to get dependency packages below
+ENV IGN_WS /home/$USERNAME/ign_ws
+RUN mkdir -p ${IGN_WS}/src \
+ && cd ${IGN_WS}/src \
+ && wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-dome.yaml \
+ && vcs import < collection-dome.yaml
+
 # Install Ignition dependencies
+# This parses Ignition source tree to find package dependencies
 RUN sudo /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
  && sudo /bin/sh -c 'wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -' \
  && sudo apt-get update \
@@ -77,3 +88,6 @@ RUN sudo /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-s
 RUN sudo apt-get install -y \
     python3-psutil \
     doxygen
+
+# Remove Ignition source
+RUN rm -r ${IGN_WS}

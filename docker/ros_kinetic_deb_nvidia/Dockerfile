@@ -54,11 +54,7 @@ RUN useradd -U --uid ${user_id} -ms /bin/bash $USERNAME \
 # Commands below run as the developer user
 USER $USERNAME
 
-# Make a couple folders for organizing docker volumes
-RUN mkdir ~/workspaces ~/other
-
 # When running a container start in the developer's home folder
 WORKDIR /home/$USERNAME
 
 RUN rosdep update
-
