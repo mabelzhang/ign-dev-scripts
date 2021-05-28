@@ -1,7 +1,7 @@
 # Install dependencies of Gazebo 7, but not Gazebo 7 itself, so that it can
 # be built from source inside the container for development.
 
-# Adapted from subt Gazebo 9 (from Debian) Dockerfile
+# Adapted from subt Gazebo 9 (from binaries) Dockerfile
 #   https://bitbucket.org/osrf/subt/src/gazebo9/docker/subt/Dockerfile
 
 # Base on Kinetic Dockerfile with NVIDIA
@@ -31,7 +31,7 @@ RUN rosdep update
 
 # Instructions specific to a setup to build Gazebo from source
 
-# Remove Debian installation of Gazebo-related libraries
+# Remove binary installation of Gazebo-related libraries
 # http://gazebosim.org/tutorials?tut=install_from_source&cat=install
 RUN sudo apt-get remove -y '.*gazebo.*' '.*sdformat.*' '.*ignition-.*'
 

@@ -1,11 +1,5 @@
-# Install all the dependencies required for building Ignition from source
-#   https://ignitionrobotics.org/docs/edifice/install_ubuntu_src
-# Ignition itself is not installed. A directory containing the source code
-# can be mounted from the host when run the container, and compiled within
-# the container.
-
-# Adapted from subt Gazebo 9 Dockerfile
-#   https://bitbucket.org/osrf/subt/src/gazebo9/docker/subt/Dockerfile
+# Install dependencies and build Ignition from source
+#   https://ignitionrobotics.org/docs/dome/install_ubuntu_src
 
 # Ubuntu with nvidia-docker2 beta opengl support
 FROM nvidia/opengl:1.0-glvnd-devel-ubuntu20.04
@@ -18,6 +12,7 @@ RUN apt-get update \
         build-essential \
         cmake \
         cppcheck \
+        curl \
         gdb \
         git \
         libbluetooth-dev \
@@ -36,7 +31,6 @@ RUN apt-get update \
         sudo \
         vim \
         wget \
-        curl \
  && apt-get clean
 
 # Add a user with the same user_id as the user outside the container
@@ -69,7 +63,7 @@ RUN sudo /bin/sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/ma
  && sudo apt-get update \
  && sudo apt-get install -y python3-vcstool python3-colcon-common-extensions
 
-# Check out Ignition source, just to get dependency packages below
+# Check out Ignition source
 ENV IGN_WS /home/$USERNAME/ign_ws
 RUN mkdir -p ${IGN_WS}/src \
  && cd ${IGN_WS}/src \
@@ -84,10 +78,11 @@ RUN sudo /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-s
  && sudo apt-get install -y \
   $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/ignition\|sdf/d' | tr '\n' ' ')
 
-# sdformat10 dependencies
-RUN sudo apt-get install -y \
-    python3-psutil \
-    doxygen
+# sdformat10 optional dependencies
+#RUN sudo apt-get install -y \
+#    python3-psutil \
+#    doxygen
 
-# Remove Ignition source
-RUN rm -r ${IGN_WS}
+# Build Ignition. Disable tests to speed up build
+RUN cd ${IGN_WS} \
+ && colcon build --merge-install --cmake-args -DBUILD_TESTING=OFF
