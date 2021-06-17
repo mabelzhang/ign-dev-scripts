@@ -22,7 +22,6 @@ RUN apt-get update \
         libspnav-dev \
         libusb-dev \
         lsb-release \
-        mercurial \
         python3-dbg \
         python3-empy \
         python3-numpy \
@@ -76,7 +75,10 @@ RUN export DEBIAN_FRONTEND=noninteractive \
  && sudo apt-get update \
  && sudo DEBIAN_FRONTEND=noninteractive apt-get install -y \
     python3-catkin-tools \
+    python3-rosdep \
     python3-rosinstall \
+    python3-rosinstall-generator \
+    python3-wstool \
     ros-noetic-desktop-full \
     ros-noetic-joystick-drivers \
     ros-noetic-pointcloud-to-laserscan \
@@ -85,9 +87,6 @@ RUN export DEBIAN_FRONTEND=noninteractive \
     ros-noetic-tf2-sensor-msgs \
     ros-noetic-twist-mux \
     ros-noetic-velodyne-simulator \
-    python3-rosdep \
-    python3-rosinstall-generator \
-    python3-wstool \
  && sudo rosdep init \
  && sudo apt-get clean
 
@@ -97,7 +96,7 @@ RUN rosdep update
 # docker is run
 #RUN mkdir -p /home/$USERNAME/.gazebo && git clone https://github.com/osrf/gazebo_models /home/$USERNAME/.gazebo/models
 
-# Gazebo 11 install from Debian
+# Gazebo 11 install from binary packages
 RUN sudo apt-get update \
   && sudo apt-get install -y libsdformat9* \
   && sudo apt-get install -y libgazebo11*
@@ -106,6 +105,6 @@ RUN sudo apt-get install -y ccache python3-colcon-common-extensions
 
 # Optional: Extra dependencies for VRX and VORC
 RUN sudo apt-get install -y ros-noetic-joy-teleop ros-noetic-joy \
-    ros-noetic-teleop-twist-keyboard ros-noetic-velodyne-simulator \
+    ros-noetic-teleop-twist-keyboard \
     ros-noetic-hector-gazebo-plugins
 RUN pip3 install oyaml
