@@ -61,8 +61,6 @@ then
 fi
 
 # Mabel: Share your custom terminal setup commands
-SETUPRC=~/.setuprc_mmbo
-DOCKER_OPTS="$DOCKER_OPTS -v $SETUPRC:/home/developer/.setuprc:ro"
 GITCONFIG=~/.gitconfig
 DOCKER_OPTS="$DOCKER_OPTS -v $GITCONFIG:/home/developer/.gitconfig:ro"
 
