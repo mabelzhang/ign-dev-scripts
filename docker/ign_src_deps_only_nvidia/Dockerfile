@@ -1,5 +1,5 @@
 # Install all the dependencies required for building Ignition from source
-#   https://ignitionrobotics.org/docs/edifice/install_ubuntu_src
+#   https://gazebosim.org/docs/garden/install_ubuntu_src
 # Ignition itself is not installed. A directory containing the source code
 # can be mounted from the host when run the container, and compiled within
 # the container.
@@ -18,8 +18,10 @@ RUN apt-get update \
         build-essential \
         cmake \
         cppcheck \
+        curl \
         gdb \
         git \
+        gnupg \
         libbluetooth-dev \
         libcwiid-dev \
         libgoogle-glog-dev \
@@ -70,29 +72,19 @@ RUN sudo /bin/sh -c 'echo "deb [arch=amd64,arm64] http://repo.ros2.org/ubuntu/ma
  && sudo apt-get install -y python3-vcstool python3-colcon-common-extensions
 
 # Check out Ignition source, just to get dependency packages below
-ENV IGN_WS /home/$USERNAME/ign_ws
-RUN mkdir -p ${IGN_WS}/src \
- && cd ${IGN_WS}/src \
- && wget https://raw.githubusercontent.com/ignition-tooling/gazebodistro/master/collection-garden.yaml \
+ENV GZ_WS /home/$USERNAME/gz_ws
+RUN mkdir -p ${GZ_WS}/src \
+ && cd ${GZ_WS}/src \
+ && wget https://raw.githubusercontent.com/gazebo-tooling/gazebodistro/master/collection-garden.yaml \
  && vcs import < collection-garden.yaml
 
 # Install Ignition dependencies
 # This parses Ignition source tree to find package dependencies
-#RUN sudo /bin/sh -c 'echo "deb http://packages.osrfoundation.org/gazebo/ubuntu-stable `lsb_release -cs` main" > /etc/apt/sources.list.d/gazebo-stable.list' \
-# && sudo /bin/sh -c 'wget http://packages.osrfoundation.org/gazebo.key -O - | sudo apt-key add -' \
 RUN sudo /bin/sh -c 'wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/share/keyrings/pkgs-osrf-archive-keyring.gpg' \
  && /bin/sh -c 'echo "deb [arch=$(dpkg --print-architecture) signed-by=/usr/share/keyrings/pkgs-osrf-archive-keyring.gpg] http://packages.osrfoundation.org/gazebo/ubuntu-stable $(lsb_release -cs) main" | sudo tee /etc/apt/sources.list.d/gazebo-stable.list > /dev/null' \
  && sudo apt-get update \
  && sudo apt-get install -y \
-  $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/ignition\|sdf/d' | tr '\n' ' ')
-
-# sdformat10 dependencies
-RUN sudo apt-get install -y \
-    python3-psutil \
-    doxygen
-
-# Ignition Fortress OGRE 2
-RUN sudo apt-get install -y libogre-2.2-dev
+      $(sort -u $(find . -iname 'packages-'`lsb_release -cs`'.apt' -o -iname 'packages.apt' | grep -v '/\.git/') | sed '/gz\|sdf/d' | tr '\n' ' ')
 
 # Remove Ignition source
-RUN rm -r ${IGN_WS}
+RUN rm -r ${GZ_WS}
