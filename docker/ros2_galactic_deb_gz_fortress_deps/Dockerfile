@@ -104,7 +104,8 @@ RUN sudo /bin/sh -c 'wget https://packages.osrfoundation.org/gazebo.gpg -O /usr/
 
 # Ignition Fortress OGRE 2
 #RUN sudo apt-get install -y libogre-2.2-dev
+# ign-launch dependency
+RUN sudo apt-get install -y libdw-dev
 
 # Remove Ignition source
 RUN rm -r ${IGN_WS}
-
