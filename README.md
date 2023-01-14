@@ -1,1 +1,7 @@
-Handy development tools for poking around in Ignition Gazebo
+Dockerfiles for developing in [new Gazebo](https://gazebosim.org) with NVIDIA support (so that X windowing works, in order to show the Gazebo GUI from the Docker container on the host machine), standalone or in combination with [ROS 2](https://ros.org/). The combinations are created as needed for my development and not meant to be exhaustive.
+
+The reason I created these Dockerfiles is that the official ROS 2 images do not have NVIDIA-docker2 support, so if you simply base a Dockerfile on an official [ROS 2 image](https://hub.docker.com/r/osrf/ros2/) and install Gazebo on top, you will not be able to see the Gazebo GUI, as it will throw an X windowing error (unless you are using it the EGL way).
+
+Many of these Dockerfiles are based on the [NVIDIA OpenGL Docker image](https://hub.docker.com/r/nvidia/opengl) (in the case an Ubuntu version is too new for NVIDIA to release an official image, I have boostrapped from `nvidia/opengl` and written my own, which only involves copying from two of NVIDIA's Dockerfiles for an older Ubuntu version.
+
+Some of these Dockerfiles build Gazebo from source. Some install from binary packages, which is most suitable for a user who does not intend to develop Gazebo core packages. More recently (`*deps_only*`), I have excluded Gazebo from the Dockerfiles and only check out the source to install the dependencies if one were to build from source. This allows the Gazebo core developer to mount the actual workspace containing the source from the host machine, so that source changes can be preserved beyond the life of the Docker container.

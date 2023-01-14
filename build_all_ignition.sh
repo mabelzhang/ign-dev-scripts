@@ -1,10 +1,12 @@
 #!/bin/bash
 
+# This is no longer used. I have moved to use colcon for building.
+
 # Mabel Zhang
 # 24 Apr 2019
 #
 # Clone repositories if do not exist locally.
-# Update and rebuild all Ignition repositories
+# Update and rebuild all Ignition repositories using CMake
 #
 # Dependencies:
 #   sudo apt-get install ccache

@@ -4,7 +4,7 @@
 # 27 Apr 2020
 #
 # Clone repositories if do not exist locally.
-# Update and rebuild all Ignition repositories
+# Update and rebuild Gazebo-classic and its Ignition dependencies
 #
 # Tested on Ubuntu 18.04 with Docker image ros_melodic_gz11_deps_only_nvidia.
 #
