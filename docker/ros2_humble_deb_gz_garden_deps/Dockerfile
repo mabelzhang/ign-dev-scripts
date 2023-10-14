@@ -19,13 +19,19 @@ FROM nvidia_opengl_ubuntu22:latest
 # This avoids keyboard interaction when asked for geographic area
 ARG DEBIAN_FRONTEND=noninteractive
 
+# doxygen is removed, flex and bison added, because doxygen in Jammy has
+# a bug that generates garbled characters. Doxygen 1.9.2 fixes it, so we
+# will build that from source for the time being.
+# https://github.com/gazebosim/docs/pull/388
 RUN apt-get update \
  && apt-get install -y \
+        bison \
         build-essential \
         cmake \
         cppcheck \
         curl \
-        doxygen \
+        #doxygen \
+        flex \
         gdb \
         git \
         gnupg2 \
@@ -92,6 +98,20 @@ RUN sudo apt-get update \
     python3-colcon-common-extensions \
     ros-humble-desktop \
  && sudo apt-get clean
+
+# From https://github.com/gazebosim/docs/pull/388
+# The version of doxygen in Jammy has a bug that generates garbled characters
+# when processing xml comment code blocks in markdown. We build doxygen 1.9.2
+# from source here since the problem appears to be fixed in that version.
+# Adapted from the Dockerfile in the doxygen repo
+RUN git clone https://github.com/doxygen/doxygen.git -b Release_1_9_2 \
+ && cd doxygen \
+ && mkdir build \
+ && cd build \
+ && cmake -G "Unix Makefiles" -DCMAKE_INSTALL_PREFIX=/usr .. \
+ && make \
+ && sudo make install \
+ && cd ../..
 
 # Check out Gazebo source, just to get dependency packages below
 ENV IGN_WS /home/$USERNAME/gz_ws
